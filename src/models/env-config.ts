@@ -1,3 +1,4 @@
 export interface EnvConfig {
-  domain: string;
+  DOMAIN: string;
+  DB_URL: string;
 }

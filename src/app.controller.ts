@@ -1,18 +1,32 @@
-import { Controller, Get, Headers, HttpException, HttpStatus, Sse, MessageEvent, Param, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Headers,
+  HttpException,
+  HttpStatus,
+  Sse,
+  MessageEvent,
+  Param,
+  Res,
+  Post
+} from '@nestjs/common';
 import { MonobankService } from './services/monobank.service';
 import { Jar } from './models/jar';
 import { map, Observable, Subject } from 'rxjs';
-import { Message, UpdateMessage } from './models/update-message';
+import { UpdateMessage } from './models/update-message';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
+import { TransactionsService } from './services/transactions.service';
+import { Transaction } from './models/transaction';
+import { MonobankTransactionDto } from './models/monobank-transaction-dto';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly monobankService: MonobankService,
+    private monobankService: MonobankService,
     private eventEmitter: EventEmitter2,
-  ) {
-  }
+    private transactionService: TransactionsService,
+  ) {}
 
   @Get('init')
   async initUser(@Headers('token') token?: string): Promise<void> {
@@ -23,9 +37,15 @@ export class AppController {
   }
 
   @Get('webhook')
-  storeToDb(): void {
-    // TODO: store to db
-    // TODO: emit event
+  onSubscribe(): { status: HttpStatus.OK } {
+    return { status: HttpStatus.OK }
+  }
+
+  @Post('webhook')
+  async storeToDb(dto: MonobankTransactionDto): Promise<void> {
+    const transaction = this.monobankService.transactionAdapter(dto);
+    await this.transactionService.addTransaction(transaction);
+    this.eventEmitter.emit('topup', transaction);
   }
 
   @Get('jars')
@@ -39,17 +59,18 @@ export class AppController {
   @Sse('jars/:id')
   sse(@Param('id') id: string, @Res() response: Response): Observable<MessageEvent> {
     const messages$ = new Subject<UpdateMessage>();
-    setTimeout(() => {
-      // TODO: pull from db and push initial list
+    setTimeout(async () => {
+      const transactions = await this.transactionService.getTransactions(id);
+      messages$.next({
+        type: 'initial',
+        data: transactions,
+      })
     });
-    const subscription = this.eventEmitter.on('topup', (transaction: {
-      jarId: string;
-      message: Message;
-    }) => {
+    const subscription = this.eventEmitter.on('topup', (transaction: Transaction) => {
       if (transaction.jarId === id) {
         messages$.next({
           type: 'update',
-          data: transaction.message,
+          data: transaction,
         });
       }
     }, {objectify: true}) as Exclude<ReturnType<EventEmitter2['on']>, EventEmitter2>;

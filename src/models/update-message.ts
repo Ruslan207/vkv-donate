@@ -1,15 +1,9 @@
-export interface Message {
-  id: string;
-  description: string;
-  comment: string;
-  timestamp: number;
-  amount: number;
-}
+import { Transaction } from './transaction';
 
 export type UpdateMessage = {
   type: 'initial';
-  data: Message[];
+  data: Transaction[];
 } | {
   type: 'update';
-  data: Message;
+  data: Transaction;
 }
