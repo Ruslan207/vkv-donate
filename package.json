@@ -6,19 +6,24 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "server:build": "nest build",
     "db:run": "brew services start mongodb-community",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "server:start": "nest start",
+    "server:start:dev": "nest start --watch",
+    "server:start:debug": "nest start --debug --watch",
+    "server:start:prod": "node dist/main",
+    "server:test": "jest",
+    "server:test:watch": "jest --watch",
+    "server:test:cov": "jest --coverage",
+    "server:test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "client:test:e2e": "jest --config ./test/jest-e2e.json",
+    "ng": "ng",
+    "client:run": "ng serve",
+    "client:build": "ng build",
+    "client:watch": "ng build --watch --configuration development",
+    "client:test": "ng test",
+    "prod": "yarn run db:run && yarn run server:build && yarn run client:build && yarn run server:start:prod"
   },
   "dependencies": {
     "@nestjs/common": "~11.0.11",
@@ -31,7 +36,16 @@
     "axios": "~1.8.2",
     "mongoose": "~8.12.1",
     "reflect-metadata": "~0.2.2",
-    "rxjs": "~7.8.2"
+    "rxjs": "~7.8.2",
+    "@angular/common": "~19.2.0",
+    "@angular/compiler": "~19.2.0",
+    "@angular/core": "~19.2.0",
+    "@angular/forms": "~19.2.0",
+    "@angular/platform-browser": "~19.2.0",
+    "@angular/platform-browser-dynamic": "~19.2.0",
+    "@angular/router": "~19.2.0",
+    "tslib": "~2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@nestjs/cli": "~11.0.5",
@@ -54,7 +68,17 @@
     "ts-loader": "~9.5.2",
     "ts-node": "~10.9.2",
     "tsconfig-paths": "~4.2.0",
-    "typescript": "~5.8.2"
+    "typescript": "~5.8.2",
+    "@angular-devkit/build-angular": "~19.2.1",
+    "@angular/cli": "~19.2.1",
+    "@angular/compiler-cli": "~19.2.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0"
   },
   "jest": {
     "moduleFileExtensions": [

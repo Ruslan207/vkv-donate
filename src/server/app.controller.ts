@@ -37,9 +37,7 @@ export class AppController {
   }
 
   @Get('webhook')
-  onSubscribe(): { status: HttpStatus.OK } {
-    return { status: HttpStatus.OK }
-  }
+  onSubscribe(): void {}
 
   @Post('webhook')
   async storeToDb(dto: MonobankTransactionDto): Promise<void> {
