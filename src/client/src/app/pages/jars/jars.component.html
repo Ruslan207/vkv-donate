@@ -1,0 +1,23 @@
+@if (jars.isLoading()) {
+  <mat-spinner />
+}
+@if (jars.error(); as error) {
+  <pre>{{ error | json }}</pre>
+}
+@for (jar of jars.value(); track jar.id) {
+  <mat-card appearance="outlined" (click)="goToJar(jar.id)">
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{ jar.title }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ jar.currencyCode | currencyCode }} {{ jar.balance }} / {{ jar.goal }}
+        </mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      {{ jar.description }}
+    </mat-card-content>
+  </mat-card>
+} @empty {
+  <p>Нема банок</p>
+}

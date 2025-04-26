@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { EnvConfig } from '../models/env-config';
 import { firstValueFrom } from 'rxjs';
-import { Jar } from '../models/jar';
+import { Jar } from '../../models/jar';
 import { MonobankTransactionDto } from '../models/monobank-transaction-dto';
-import { Transaction } from '../models/transaction';
+import { Transaction } from '../../models/transaction';
 
 @Injectable()
 export class MonobankService {

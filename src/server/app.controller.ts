@@ -11,13 +11,13 @@ import {
   Post
 } from '@nestjs/common';
 import { MonobankService } from './services/monobank.service';
-import { Jar } from './models/jar';
+import { Jar } from '../models/jar';
 import { map, Observable, Subject } from 'rxjs';
-import { UpdateMessage } from './models/update-message';
+import { UpdateMessage } from '../models/update-message';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Response } from 'express';
 import { TransactionsService } from './services/transactions.service';
-import { Transaction } from './models/transaction';
+import { Transaction } from '../models/transaction';
 import { MonobankTransactionDto } from './models/monobank-transaction-dto';
 
 @Controller()

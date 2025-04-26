@@ -1,0 +1,12 @@
+<span>
+  {{ transaction().timestamp | date: 'HH:mm' }}
+</span>
+<span>
+  {{ transaction().sender }}
+</span>
+<span>
+  {{ transaction().comment }}
+</span>
+<span>
+  {{ transaction().amount }}
+</span>

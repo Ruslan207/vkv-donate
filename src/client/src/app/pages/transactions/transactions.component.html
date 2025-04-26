@@ -1,0 +1,5 @@
+<cdk-virtual-scroll-viewport itemSize="50">
+  <div *cdkVirtualFor="let transaction of transactions$ | async">
+    <app-transaction [transaction]="transaction"/>
+  </div>
+</cdk-virtual-scroll-viewport>

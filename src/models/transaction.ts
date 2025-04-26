@@ -1,4 +1,4 @@
-import { TransactionStatus } from './transaction-status';
+import { TransactionStatus } from '../server/models/transaction-status';
 
 export interface Transaction {
   id: string;
