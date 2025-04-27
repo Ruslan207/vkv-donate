@@ -7,12 +7,11 @@
   "license": "UNLICENSED",
   "scripts": {
     "server:build": "nest build",
-    "db:run": "brew services start mongodb-community",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "server:start": "nest start",
     "server:start:dev": "nest start --watch",
     "server:start:debug": "nest start --debug --watch",
-    "server:start:prod": "node dist/main",
+    "server:start:prod": "node dist/server/main",
     "server:test": "jest",
     "server:test:watch": "jest --watch",
     "server:test:cov": "jest --coverage",
@@ -22,8 +21,7 @@
     "client:run": "ng serve",
     "client:build": "ng build",
     "client:watch": "ng build --watch --configuration development",
-    "client:test": "ng test",
-    "prod": "yarn run db:run && yarn run server:build && yarn run client:build && yarn run server:start:prod"
+    "client:test": "ng test"
   },
   "dependencies": {
     "@angular/cdk": "19.2.11",
