@@ -8,7 +8,8 @@ import {
   MessageEvent,
   Param,
   Res,
-  Post
+  Post,
+  Body,
 } from '@nestjs/common';
 import { MonobankService } from './services/monobank.service';
 import { Jar } from '../models/jar';
@@ -40,7 +41,7 @@ export class AppController {
   onSubscribe(): void {}
 
   @Post('webhook')
-  async storeToDb(dto: MonobankTransactionDto): Promise<void> {
+  async storeToDb(@Body() dto: MonobankTransactionDto): Promise<void> {
     const transaction = this.monobankService.transactionAdapter(dto);
     await this.transactionService.addTransaction(transaction);
     this.eventEmitter.emit('topup', transaction);

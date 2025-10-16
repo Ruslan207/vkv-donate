@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { Jar } from '../../models/jar';
 import { MonobankTransactionDto } from '../models/monobank-transaction-dto';
 import { Transaction } from '../../models/transaction';
+import { TransactionStatus } from '../models/transaction-status';
 
 @Injectable()
 export class MonobankService {
@@ -31,9 +32,14 @@ export class MonobankService {
   }
 
   transactionAdapter(dto: MonobankTransactionDto): Transaction {
-    // TODO: define MonobankTransactionDto and implement adapter
     return {
-
-    } as Transaction
+      id: dto.data.statementItem.id,
+      amount: dto.data.statementItem.amount,
+      comment: dto.data.statementItem.comment ?? '',
+      sender: dto.data.statementItem.description,
+      timestamp: dto.data.statementItem.time,
+      jarId: dto.data.account,
+      status: TransactionStatus.Default,
+    } satisfies Transaction
   }
 }
