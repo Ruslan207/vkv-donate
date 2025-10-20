@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
   ],
   templateUrl: './token.component.html',
-  styleUrl: './token.component.scss'
+  styleUrl: './token.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TokenComponent {
   private apiService = inject(ApiService);

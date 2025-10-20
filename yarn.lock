@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@ag-grid-community/locale@^34.2.0":
+  version "34.2.0"
+  resolved "https://registry.yarnpkg.com/@ag-grid-community/locale/-/locale-34.2.0.tgz#7e4918f9fab52e72fc480cf32af8363b52d88f96"
+  integrity sha512-wCcEN5Bfm1/CyRUSufyyU0+Tkue5qtGMOWjxGoJuXBr+Qk69Wxp0BGhXkrQ/Sk4sXBFb/GpvV3RqHlnlzxdDjg==
+
 "@ampproject/remapping@2.3.0", "@ampproject/remapping@^2.2.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
@@ -3523,7 +3528,7 @@ ag-grid-angular@~34.2.0:
     ag-grid-community "34.2.0"
     tslib "^2.3.0"
 
-ag-grid-community@34.2.0:
+ag-grid-community@34.2.0, ag-grid-community@~34.2.0:
   version "34.2.0"
   resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-34.2.0.tgz#708986ea8f0212313aa92c581027f3d7d35a4ce2"
   integrity sha512-peS7THEMYwpIrwLQHmkRxw/TlOnddD/F5A88RqlBxf8j+WqVYRWMOOhU5TqymGcha7z2oZ8IoL9ROl3gvtdEjg==
@@ -4489,6 +4494,11 @@ custom-event@~1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/custom-event/-/custom-event-1.0.1.tgz#5d02a46850adf1b4a317946a3928fccb5bfd0425"
   integrity sha512-GAj5FOq0Hd+RsCGVJxZuKaIDXDf3h6GQoNEjFgbLLI/trgtavwUbSnZ5pVfg27DVCaWjIohryS0JFwIJyT2cMg==
+
+date-fns@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-4.1.0.tgz#64b3d83fff5aa80438f5b1a633c2e83b8a1c2d14"
+  integrity sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==
 
 date-format@^4.0.14:
   version "4.0.14"

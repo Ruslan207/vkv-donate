@@ -23,6 +23,7 @@
     "client:test": "ng test"
   },
   "dependencies": {
+    "@ag-grid-community/locale": "^34.2.0",
     "@angular/cdk": "19.2.11",
     "@angular/common": "~19.2.8",
     "@angular/compiler": "~19.2.8",
@@ -40,8 +41,10 @@
     "@nestjs/mongoose": "~11.0.1",
     "@nestjs/platform-express": "~11.0.11",
     "ag-grid-angular": "~34.2.0",
+    "ag-grid-community": "~34.2.0",
     "axios": "~1.8.2",
     "currency-codes": "~2.2.0",
+    "date-fns": "^4.1.0",
     "mongoose": "~8.12.1",
     "reflect-metadata": "~0.2.2",
     "rxjs": "~7.8.2",

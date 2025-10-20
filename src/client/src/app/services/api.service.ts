@@ -4,12 +4,12 @@ import { Observable, Subscriber } from 'rxjs';
 import { UpdateMessage } from '../../../../models/update-message';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private zone = inject(NgZone);
 
-  private baseUrl = './api';
+  private baseUrl = 'http://localhost:3000/api';
   private token: string | undefined;
   private eventSource: EventSource | null = null;
 
@@ -23,10 +23,10 @@ export class ApiService {
     }
     const res = await fetch(`${this.baseUrl}/jars`, {
       headers: {
-        token: this.token
-      }
+        token: this.token,
+      },
     });
-    if (!res.ok) throw new Error("Unable to load jars");
+    if (!res.ok) throw new Error('Unable to load jars');
     return await res.json() as Promise<Jar[]>;
   }
 
@@ -39,8 +39,8 @@ export class ApiService {
         this.zone.run(() => subscriber.error(error));
       };
 
-      eventSource.addEventListener('topup', (data: MessageEvent<UpdateMessage>) => {
-        this.zone.run(() => subscriber.next(data.data));
+      eventSource.addEventListener('message', (data: MessageEvent<string>) => {
+        this.zone.run(() => subscriber.next(JSON.parse(data.data) as UpdateMessage));
       });
     });
   }
