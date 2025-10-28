@@ -1,15 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
   Headers,
   HttpException,
   HttpStatus,
-  Sse,
   MessageEvent,
   Param,
-  Res,
+  Patch,
   Post,
-  Body,
+  Res,
+  Sse,
 } from '@nestjs/common';
 import { MonobankService } from './services/monobank.service';
 import { Jar } from '../models/jar';
@@ -27,7 +28,8 @@ export class AppController {
     private monobankService: MonobankService,
     private eventEmitter: EventEmitter2,
     private transactionService: TransactionsService,
-  ) {}
+  ) {
+  }
 
   @Get('init')
   async initUser(@Headers('token') token?: string): Promise<void> {
@@ -38,13 +40,19 @@ export class AppController {
   }
 
   @Get('webhook')
-  onSubscribe(): void {}
+  onSubscribe(): void {
+  }
 
   @Post('webhook')
   async storeToDb(@Body() dto: MonobankTransactionDto): Promise<void> {
     const transaction = this.monobankService.transactionAdapter(dto);
     await this.transactionService.addTransaction(transaction);
     this.eventEmitter.emit('topup', transaction);
+  }
+
+  @Patch('transactions/:id')
+  async patchTransaction(@Param('id') id: string, @Body() dto: Partial<Transaction>): Promise<void> {
+    await this.transactionService.patchTransaction(id, dto);
   }
 
   @Get('jars')
@@ -63,7 +71,7 @@ export class AppController {
       messages$.next({
         type: 'initial',
         data: transactions,
-      })
+      });
     });
     const subscription = this.eventEmitter.on('topup', (transaction: Transaction) => {
       if (transaction.jarId === id) {
@@ -72,12 +80,12 @@ export class AppController {
           data: transaction,
         });
       }
-    }, {objectify: true}) as Exclude<ReturnType<EventEmitter2['on']>, EventEmitter2>;
+    }, { objectify: true }) as Exclude<ReturnType<EventEmitter2['on']>, EventEmitter2>;
     response.on('close', () => subscription.off());
     return messages$.pipe(
       map(message => ({
         data: message,
-      }))
+      })),
     );
   }
 }

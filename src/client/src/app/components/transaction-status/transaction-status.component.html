@@ -1,0 +1,15 @@
+<mat-button-toggle-group
+  [(ngModel)]="status"
+  [hideSingleSelectionIndicator]="true"
+  (ngModelChange)="statusChangeHandler(this.transactionId(), status())"
+>
+  <mat-button-toggle [value]="TransactionStatus.Marked">
+    <mat-icon>star</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle [value]="TransactionStatus.Hidden">
+    <mat-icon>visibility_off</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle (change)="status.set(TransactionStatus.Default)">
+    <mat-icon>settings_backup_restore</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>

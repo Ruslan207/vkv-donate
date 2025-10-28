@@ -5,7 +5,8 @@ import { Transaction } from '../../models/transaction';
 
 @Injectable()
 export class TransactionsService {
-  constructor(@InjectModel('Transactions') private transactionModel: Model<Transaction>) {}
+  constructor(@InjectModel('Transactions') private transactionModel: Model<Transaction>) {
+  }
 
   getTransactions(jarId: string): Promise<Transaction[]> {
     return this.transactionModel.find({ jarId }).exec();
@@ -16,6 +17,6 @@ export class TransactionsService {
   }
 
   patchTransaction(transactionId: string, transaction: Partial<Transaction>): Promise<void> {
-    return this.transactionModel.updateOne({ id: transactionId }, transaction).exec().then();
+    return this.transactionModel.updateOne({ monoId: transactionId }, transaction).exec().then();
   }
 }

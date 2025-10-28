@@ -9,6 +9,7 @@ import { ColDef } from 'ag-grid-community';
 import { TransactionStatus } from '../../../../../server/models/transaction-status';
 import { AG_GRID_LOCALE_UA } from '@ag-grid-community/locale';
 import { format } from 'date-fns';
+import { TransactionStatusComponent } from '../../components/transaction-status/transaction-status.component';
 
 @Component({
   selector: 'app-transactions',
@@ -66,6 +67,11 @@ export class TransactionsComponent implements OnDestroy {
     { field: 'comment', headerName: 'Коментар', filter: 'agTextColumnFilter' },
     {
       field: 'status', headerName: '',
+      sortable: false,
+      cellRenderer: TransactionStatusComponent,
+      cellRendererParams: {
+        statusChangeHandler: this.statusChangeHandler.bind(this),
+      },
       filter: 'agNumberColumnFilter',
       filterParams: {
         filterOptions: [
@@ -98,5 +104,13 @@ export class TransactionsComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.apiService.close();
+  }
+
+  statusChangeHandler(transactionId: string | undefined, status: TransactionStatus | undefined): void {
+    if (!transactionId) {
+      console.error('Transaction id is not defined');
+      return;
+    }
+    this.apiService.setTransactionStatus(transactionId, status ?? TransactionStatus.Default);
   }
 }

@@ -2,6 +2,8 @@ import { inject, Injectable, NgZone } from '@angular/core';
 import { Jar } from '../../../../models/jar';
 import { Observable, Subscriber } from 'rxjs';
 import { UpdateMessage } from '../../../../models/update-message';
+import { TransactionStatus } from '../../../../server/models/transaction-status';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,7 @@ import { UpdateMessage } from '../../../../models/update-message';
 export class ApiService {
   private zone = inject(NgZone);
 
-  private baseUrl = 'http://localhost:3000/api';
+  private baseUrl = environment.apiUrl;
   private token: string | undefined;
   private eventSource: EventSource | null = null;
 
@@ -52,5 +54,15 @@ export class ApiService {
 
     this.eventSource.close();
     this.eventSource = null;
+  }
+
+  setTransactionStatus(transactionId: string, status: TransactionStatus): Promise<void> {
+    return fetch(`${this.baseUrl}/transactions/${transactionId}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ status }),
+    }).then();
   }
 }
