@@ -8,19 +8,14 @@ import {
   LocaleModule,
   ModuleRegistry,
   NumberFilterModule,
+  RowAutoHeightModule,
   TextFilterModule,
 } from 'ag-grid-community';
 import { provideZonelessChangeDetection } from '@angular/core';
 
-bootstrapApplication(
-  AppComponent,
-  {
-    providers: [
-      provideZonelessChangeDetection(),
-      provideRouter(routes),
-    ],
-  },
-)
+bootstrapApplication(AppComponent, {
+  providers: [provideZonelessChangeDetection(), provideRouter(routes)],
+})
   .then(() => {
     ModuleRegistry.registerModules([
       ClientSideRowModelModule,
@@ -28,6 +23,7 @@ bootstrapApplication(
       NumberFilterModule,
       DateFilterModule,
       LocaleModule,
+      RowAutoHeightModule,
     ]);
   })
   .catch((err) => console.error(err));

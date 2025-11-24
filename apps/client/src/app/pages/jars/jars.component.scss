@@ -1,0 +1,16 @@
+@use 'sass:color';
+
+:host {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+mat-card {
+  cursor: pointer;
+
+  &:hover {
+    --mat-card-outlined-container-color: #{color.adjust(#faf9fd, $lightness: -5%)};
+  }
+}

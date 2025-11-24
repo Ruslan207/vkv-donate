@@ -3,13 +3,13 @@
   [hideSingleSelectionIndicator]="true"
   (ngModelChange)="statusChangeHandler(this.transactionId(), status())"
 >
-  <mat-button-toggle [value]="TransactionStatus.Marked">
+  <mat-button-toggle [value]="TransactionStatus.Marked" matTooltip="Обране">
     <mat-icon>star</mat-icon>
   </mat-button-toggle>
-  <mat-button-toggle [value]="TransactionStatus.Hidden">
+  <mat-button-toggle [value]="TransactionStatus.Hidden" matTooltip="Приховати">
     <mat-icon>visibility_off</mat-icon>
   </mat-button-toggle>
-  <mat-button-toggle (change)="status.set(TransactionStatus.Default)">
+  <mat-button-toggle (change)="status.set(TransactionStatus.Default)" matTooltip="Reset">
     <mat-icon>settings_backup_restore</mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>

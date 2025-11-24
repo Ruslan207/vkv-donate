@@ -8,12 +8,19 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { Transaction, TransactionStatus } from 'models';
 import { FormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-transaction-status',
   templateUrl: './transaction-status.component.html',
   styleUrl: './transaction-status.component.scss',
-  imports: [MatButtonToggleGroup, MatButtonToggle, MatIcon, FormsModule],
+  imports: [
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatIcon,
+    FormsModule,
+    MatTooltip,
+  ],
 })
 export class TransactionStatusComponent implements ICellRendererAngularComp {
   status = signal<TransactionStatus | undefined>(undefined);

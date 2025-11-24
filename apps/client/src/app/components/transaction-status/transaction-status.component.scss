@@ -1,3 +1,7 @@
+@use '@angular/material' as mat;
+
 :host {
-  --mat-standard-button-toggle-height: 36px;
+  @include mat.button-toggle-overrides((
+    height: 36px
+  ));
 }

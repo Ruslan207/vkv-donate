@@ -1,5 +1,5 @@
 <ag-grid-angular
-  [rowData]="transactions$ | async"
+  [rowData]="transactions()"
   [columnDefs]="colDefs"
   [localeText]="agGridLocale"
   [defaultColDef]="defaultColDef"

@@ -43,7 +43,7 @@ export class ApiService {
     });
   }
 
-  close(): void {
+  unsubscribeFromJar(): void {
     if (!this.eventSource) {
       return;
     }

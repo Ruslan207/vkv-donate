@@ -3,10 +3,11 @@ import {
   Component,
   inject,
   OnDestroy,
+  signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { map, Observable, scan, shareReplay, switchMap } from 'rxjs';
+import { map, scan, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Transaction, TransactionStatus } from 'models';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -14,6 +15,8 @@ import { ColDef } from 'ag-grid-community';
 import { AG_GRID_LOCALE_UA } from '@ag-grid-community/locale';
 import { format } from 'date-fns';
 import { TransactionStatusComponent } from '../../components/transaction-status/transaction-status.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-transactions',
@@ -25,20 +28,9 @@ import { TransactionStatusComponent } from '../../components/transaction-status/
 export class TransactionsComponent implements OnDestroy {
   private activeRoute = inject(ActivatedRoute);
   private apiService = inject(ApiService);
+  private snackBar = inject(MatSnackBar);
 
-  transactions$: Observable<Transaction[]> = this.activeRoute.params.pipe(
-    map((params) => params['jarId'] as string),
-    switchMap((jarId) => this.apiService.subscribeOnJar(jarId)),
-    scan((acc, value) => {
-      switch (value.type) {
-        case 'initial':
-          return value.data;
-        case 'update':
-          return [...acc, value.data];
-      }
-    }, [] as Transaction[]),
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  transactions = signal<Transaction[]>([]);
 
   readonly agGridLocale = AG_GRID_LOCALE_UA;
   readonly defaultColDef = {
@@ -57,16 +49,20 @@ export class TransactionsComponent implements OnDestroy {
       filterParams: {
         includeTime: true,
       },
-      valueGetter: ({ data: transaction }) => {
-        return transaction?.timestamp ? new Date(transaction.timestamp) : null;
-      },
-      valueFormatter: ({ value }) => {
-        return value ? format(value, 'dd.MM.yyyy HH:mm:ss') : '–';
-      },
+      valueGetter: ({ data: transaction }) =>
+        transaction?.timestamp ? new Date(transaction.timestamp) : null,
+      valueFormatter: ({ value }) =>
+        value ? format(value, 'dd.MM.yyyy HH:mm:ss') : '–',
     },
     { field: 'amount', headerName: 'Сума', filter: 'agNumberColumnFilter' },
     { field: 'sender', headerName: 'Відправник', filter: 'agTextColumnFilter' },
-    { field: 'comment', headerName: 'Коментар', filter: 'agTextColumnFilter' },
+    {
+      field: 'comment',
+      headerName: 'Коментар',
+      filter: 'agTextColumnFilter',
+      wrapText: true,
+      autoHeight: true,
+    },
     {
       field: 'status',
       headerName: '',
@@ -82,10 +78,8 @@ export class TransactionsComponent implements OnDestroy {
           {
             displayKey: 'starsOnly',
             displayName: 'Лише з зірочкою',
-            predicate: (_: unknown, cellValue: number) => {
-              console.log(cellValue);
-              return cellValue === TransactionStatus.Marked;
-            },
+            predicate: (_: unknown, cellValue: number) =>
+              cellValue === TransactionStatus.Marked,
             numberOfInputs: 0,
           },
           {
@@ -107,8 +101,26 @@ export class TransactionsComponent implements OnDestroy {
     },
   ];
 
+  constructor() {
+    this.activeRoute.params
+      .pipe(
+        map((params) => params['jarId'] as string),
+        switchMap((jarId) => this.apiService.subscribeOnJar(jarId)),
+        scan((acc, value) => {
+          switch (value.type) {
+            case 'initial':
+              return value.data;
+            case 'update':
+              return [...acc, value.data];
+          }
+        }, [] as Transaction[]),
+        takeUntilDestroyed()
+      )
+      .subscribe((transactions) => this.transactions.set(transactions));
+  }
+
   ngOnDestroy(): void {
-    this.apiService.close();
+    this.apiService.unsubscribeFromJar();
   }
 
   statusChangeHandler(
@@ -119,9 +131,24 @@ export class TransactionsComponent implements OnDestroy {
       console.error('Transaction id is not defined');
       return;
     }
-    this.apiService.setTransactionStatus(
-      transactionId,
-      status ?? TransactionStatus.Default
-    );
+    this.apiService
+      .setTransactionStatus(transactionId, status ?? TransactionStatus.Default)
+      .then(() => {
+        this.transactions.update((transactions) =>
+          transactions.map((transaction) =>
+            transaction.monoId === transactionId
+              ? {
+                  ...transaction,
+                  status: status ?? TransactionStatus.Default,
+                }
+              : transaction
+          )
+        );
+        this.snackBar.open('Збережено', undefined, {
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          duration: 2000,
+        });
+      });
   }
 }

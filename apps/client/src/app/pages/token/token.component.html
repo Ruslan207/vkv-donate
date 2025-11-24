@@ -4,7 +4,7 @@
     <input matInput formControlName="token" />
   </mat-form-field>
   <button
-    mat-flat-button
+    matButton="outlined"
     [disabled]="form.invalid"
     type="submit"
   >
@@ -12,3 +12,17 @@
     <mat-icon iconPositionEnd>arrow_forward</mat-icon>
   </button>
 </form>
+<div class="divider"></div>
+<aside>
+  <header>Як отримати токен</header>
+  <main>
+    <ol>
+      <li>Перейти на <a href="https://api.monobank.ua" target="_blank">https://api.monobank.ua</a></li>
+      <li>Авторизуватись за допомогою додатку на телефоні</li>
+      <li>Натиснути "Activate token"</li>
+      <li>
+        <span>Якщо токен вже існує, необхідно його видалити і створити новий</span>
+      </li>
+    </ol>
+  </main>
+</aside>
