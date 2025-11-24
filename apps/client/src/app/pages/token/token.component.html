@@ -1,0 +1,14 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <mat-form-field appearance="outline">
+    <mat-label>Токен</mat-label>
+    <input matInput formControlName="token" />
+  </mat-form-field>
+  <button
+    mat-flat-button
+    [disabled]="form.invalid"
+    type="submit"
+  >
+    Далі
+    <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+  </button>
+</form>
