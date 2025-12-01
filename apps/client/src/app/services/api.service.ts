@@ -11,8 +11,13 @@ export class ApiService {
   private token: string | undefined;
   private eventSource: EventSource | null = null;
 
-  setToken(token: string): void {
+  async setToken(token: string): Promise<void> {
     this.token = token;
+    await fetch(`${this.baseUrl}/init`, {
+      headers: {
+        token: this.token,
+      },
+    });
   }
 
   async getJars(): Promise<Jar[]> {

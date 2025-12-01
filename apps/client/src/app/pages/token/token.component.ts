@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 
@@ -22,14 +27,18 @@ import { Router } from '@angular/router';
 })
 export class TokenComponent {
   private apiService = inject(ApiService);
-  private router = inject(Router)
+  private router = inject(Router);
 
   form = new FormGroup({
-    token: new FormControl('', { nonNullable: true, validators: Validators.required })
-  })
+    token: new FormControl('', {
+      nonNullable: true,
+      validators: Validators.required,
+    }),
+  });
 
   onSubmit(): void {
-    this.apiService.setToken(this.form.getRawValue().token);
-    this.router.navigate(['/', 'jars']);
+    this.apiService
+      .setToken(this.form.getRawValue().token)
+      .then(() => this.router.navigate(['/', 'jars']));
   }
 }
