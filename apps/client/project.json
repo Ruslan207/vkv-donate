@@ -10,6 +10,7 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "allowedCommonJsDependencies": ["currency-codes"],
         "outputPath": "dist/apps/client",
         "browser": "apps/client/src/main.ts",
         "tsConfig": "apps/client/tsconfig.app.json",

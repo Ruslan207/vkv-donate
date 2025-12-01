@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "client:build": "nx build apps/client",
     "client:run": "nx serve apps/client",
+    "server:build": "nx build apps/server",
     "server:run": "nx serve apps/server"
   },
   "private": true,
