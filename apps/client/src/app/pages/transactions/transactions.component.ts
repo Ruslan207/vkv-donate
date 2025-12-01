@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  OnDestroy,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { map, scan, switchMap } from 'rxjs';
@@ -58,9 +52,7 @@ export class TransactionsComponent implements OnDestroy {
       field: 'amount',
       headerName: 'Сума',
       filter: 'agNumberColumnFilter',
-      valueGetter: ({ data: transaction }) => ({
-        value: (transaction?.amount ?? 0) / 100,
-      }),
+      valueGetter: ({ data: transaction }) => (transaction?.amount ?? 0) / 100,
     },
     { field: 'sender', headerName: 'Відправник', filter: 'agTextColumnFilter' },
     {
