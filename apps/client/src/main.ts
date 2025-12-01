@@ -3,20 +3,29 @@ import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 import { routes } from './app/app.routes';
 import { provideZonelessChangeDetection } from '@angular/core';
+import {
+  ClientSideRowModelModule,
+  DateFilterModule,
+  LocaleModule,
+  ModuleRegistry,
+  NumberFilterModule,
+  RowApiModule,
+  RowAutoHeightModule,
+  TextFilterModule,
+} from 'ag-grid-community';
 
 bootstrapApplication(AppComponent, {
   providers: [provideZonelessChangeDetection(), provideRouter(routes)],
 })
-  .then(() =>
-    import('ag-grid-community').then((agGridPackage) =>
-      agGridPackage.ModuleRegistry.registerModules([
-        agGridPackage.ClientSideRowModelModule,
-        agGridPackage.TextFilterModule,
-        agGridPackage.NumberFilterModule,
-        agGridPackage.DateFilterModule,
-        agGridPackage.LocaleModule,
-        agGridPackage.RowAutoHeightModule,
-      ])
-    )
-  )
+  .then(() => {
+    ModuleRegistry.registerModules([
+      ClientSideRowModelModule,
+      TextFilterModule,
+      NumberFilterModule,
+      DateFilterModule,
+      LocaleModule,
+      RowAutoHeightModule,
+      RowApiModule,
+    ]);
+  })
   .catch((err) => console.error(err));

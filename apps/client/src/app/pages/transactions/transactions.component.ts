@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { map, scan, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Transaction, TransactionStatus } from 'models';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, ModelUpdatedEvent } from 'ag-grid-community';
 import { AG_GRID_LOCALE_UA } from '@ag-grid-community/locale';
 import { format } from 'date-fns';
 import { TransactionStatusComponent } from '../../components/transaction-status/transaction-status.component';
@@ -25,6 +31,7 @@ export class TransactionsComponent implements OnDestroy {
   private snackBar = inject(MatSnackBar);
 
   transactions = signal<Transaction[]>([]);
+  rowsCount = signal<number>(0);
 
   readonly agGridLocale = AG_GRID_LOCALE_UA;
   readonly defaultColDef = {
@@ -149,5 +156,10 @@ export class TransactionsComponent implements OnDestroy {
           duration: 2000,
         });
       });
+  }
+
+  onModelUpdated(event: ModelUpdatedEvent<Transaction>): void {
+    const rows = event.api.getRenderedNodes().length ?? 0;
+    this.rowsCount.set(rows);
   }
 }

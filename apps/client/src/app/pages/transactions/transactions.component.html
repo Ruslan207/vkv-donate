@@ -3,4 +3,8 @@
   [columnDefs]="colDefs"
   [localeText]="agGridLocale"
   [defaultColDef]="defaultColDef"
+  (modelUpdated)="onModelUpdated($event)"
 />
+<footer>
+  Рядків: {{ rowsCount() }}
+</footer>
