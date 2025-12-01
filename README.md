@@ -1,4 +1,4 @@
-# Real-time моніторинг транзакцій Monobank для ВКВ
+# Real-time monitoring of Monobank transactions for VKV
 
 ## How to deploy
 
@@ -11,3 +11,11 @@
 7. Run `client:build`
 8. Run `server:start:prod`
 9. Configure Nginx (or other web server) to serve `dist/apps/client/browser` directory and proxy `/api/` requests to `localhost:3000`
+
+### Example of `.env` file
+
+```
+DB_URL=mongodb://localhost/nest
+DOMAIN=https://example.com/api
+PORT=3000
+```
