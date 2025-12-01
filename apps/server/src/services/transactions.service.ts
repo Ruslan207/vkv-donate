@@ -14,7 +14,12 @@ export class TransactionsService {
   }
 
   addTransaction(transaction: Transaction): Promise<void> {
-    return new this.transactionModel(transaction).save().then();
+    return this.transactionModel
+      .findOneAndUpdate({ monoId: transaction.monoId }, transaction, {
+        upsert: true,
+      })
+      .exec()
+      .then();
   }
 
   patchTransaction(

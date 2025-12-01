@@ -50,11 +50,18 @@ export class TransactionsComponent implements OnDestroy {
         includeTime: true,
       },
       valueGetter: ({ data: transaction }) =>
-        transaction?.timestamp ? new Date(transaction.timestamp) : null,
+        transaction?.timestamp ? new Date(transaction.timestamp * 1000) : null,
       valueFormatter: ({ value }) =>
         value ? format(value, 'dd.MM.yyyy HH:mm:ss') : '–',
     },
-    { field: 'amount', headerName: 'Сума', filter: 'agNumberColumnFilter' },
+    {
+      field: 'amount',
+      headerName: 'Сума',
+      filter: 'agNumberColumnFilter',
+      valueGetter: ({ data: transaction }) => ({
+        value: (transaction?.amount ?? 0) / 100,
+      }),
+    },
     { field: 'sender', headerName: 'Відправник', filter: 'agTextColumnFilter' },
     {
       field: 'comment',

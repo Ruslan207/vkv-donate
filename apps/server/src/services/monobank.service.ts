@@ -45,7 +45,7 @@ export class MonobankService {
       amount: dto.data.statementItem.amount,
       comment: dto.data.statementItem.comment ?? '',
       sender: dto.data.statementItem.description,
-      timestamp: dto.data.statementItem.time * 1000,
+      timestamp: dto.data.statementItem.time,
       jarId: dto.data.account,
       status: TransactionStatus.Default,
     } satisfies Transaction;
